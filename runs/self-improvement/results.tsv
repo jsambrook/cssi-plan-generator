@@ -1,0 +1,9 @@
+iteration	variant	move	T	V	D	F	S	new_best	one_line
+1	v001	5-resolve-tension	55	68	76	58	70	yes	EC resolved self-evaluation conflict with four structural anti-inflation mechanisms
+2	v002	1-make-concrete	68	70	74	58	72	yes	Three testable targets with named success criteria for manual steps, onboarding, and scoring integrity
+3	v003	2-reduce-human-dep	70	74	74	60	73	yes	Audited 8 manual steps, eliminated/deferred 5; front-load-then-run principle
+4	v004	6-research-ground	70	74	72	68	73	yes	Grounded error containment in research; added drift detection every 3 iterations
+5	v005	4-improve-clarity	72	76	72	68	73	yes	CLAUDE.md rewrite separating user-facing and agent-facing sections; Target 2 addressed
+6	v006	10-inventive-principle	72	80	70	68	75	no	Cross-run learning loop (TRIZ #23/#25); lost on tiebreak (Difficulty dropped 72→70)
+7	v007	3-adjust-scope	73	78	73	69	75	yes	Simplified learning loop to cross-run TSV scan only; dropped move-history.md
+8	v008	8-IFR	73	78	75	71	75	yes	IFR: separated methodology from overhead; merged/simplified 3 mechanisms
