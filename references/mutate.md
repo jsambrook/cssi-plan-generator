@@ -54,6 +54,8 @@ After applying a move, the agent scores the resulting variant and updates curren
 
 **Output looks like:** A named tension, a resolved cloud with the winning injection identified, and a revised idea that incorporates the injection. See `references/resolve.md` for the full process.
 
+**After the injection:** Validate it with a quick Future Reality Tree plus Negative Branch Reservations. Confirm the injection actually produces the desired effects, note any trims required, and capture the logic in the variant's Notes. If the change spans multiple tactics or teams, sketch the resulting Strategy & Tactic Tree so the rest of the run stays aligned.
+
 ---
 
 ## Move 6: Research and ground
@@ -93,7 +95,7 @@ After applying a move, the agent scores the resulting variant and updates curren
 4. Challenge the beliefs underlying each causal step. Which belief is wrong or conditional?
 5. Design a change that stops the negative side effects from accumulating — breaking the loop.
 
-**Output looks like:** A named oscillation, the two-sided loop mapped out, the challenged belief, the loop-breaking change, and the revised idea incorporating it. See `references/toc-thinking-processes.md` for the full Magic Druids tool description.
+**Output looks like:** A named oscillation, the two-sided loop mapped out, the challenged belief, the loop-breaking change, and the revised idea incorporating it. After mapping, run an FRT + NBR pass on the proposed change to ensure it doesn't create a new loop elsewhere. See `references/toc-thinking-processes.md` for the full Magic Druids tool description.
 
 ---
 

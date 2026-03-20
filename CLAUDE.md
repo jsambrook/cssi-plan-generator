@@ -1,67 +1,75 @@
-# Proposal Generator
+# Plan Generator
 
-This project is an auto-improving business idea and proposal generator. It works in two phases:
+Auto-improving business idea refiner usable in both Claude Code and Codex. Say your idea, let the agent shape it, then let it iterate autonomously until you say stop.
 
-1. **Interactive seed discussion** - you describe a rough idea and the agent asks clarifying questions to produce a well-formed seed document.
-2. **Autonomous iteration loop** - the agent applies improvement moves repeatedly, scoring each variant and keeping the best.
+## Quick Start
 
-Inspired by Karpathy's autoresearch pattern, but adapted for business ideas using Theory of Constraints thinking.
+**Start a new idea.** Just describe it in plain language.
 
----
+> "A tool that helps plumbers schedule jobs."
+> "What if BNI chapters had a shared CRM?"
+> "I want to sell fractional COO services to SaaS startups."
 
-## How to start a session
+The agent researches the space, asks a few clarifying questions, and writes `runs/<slug>/seed.md` for your approval.
 
-Tell the agent your idea. The agent will ask questions to clarify:
-- What problem does this solve?
-- Who is the customer?
-- What is the rough mechanism?
-- What makes this hard to copy?
+**Run iterations.** After approving the seed, specify how many passes to run: `"Run 8 iterations."` The agent handles move selection, scoring, and reporting without further prompts.
 
-**Web research during seed shaping:** While shaping the seed, the agent uses WebSearch and WebFetch to ground the discussion in reality. This happens automatically — the agent researches the problem space, customer segment, competitive landscape, and any domain-specific facts relevant to the idea. Research findings are woven into the clarifying conversation (e.g., "I found that the average consultant spends X hours per proposal — does that match your experience?") and summarized in a `## Research findings` section of the seed document. The goal is to enter the iteration loop with a seed that is already grounded, not one built entirely on assumptions.
-
-The agent writes the shaped idea to `runs/<session-slug>/seed.md` and you confirm before iteration begins.
-
-## How to kick off a run
-
-Once the seed is confirmed, say something like:
-
-> "Run 5 iterations."
-
-The agent will iterate autonomously, applying one improvement move per iteration (see `references/mutate.md`), scoring each variant (see `references/score.md`), and updating `runs/<session-slug>/current-best.md` and `runs/<session-slug>/top-5.md` as it goes.
-
-At the end of the run it writes `runs/<session-slug>/report.md`.
+**Compare runs.** Once multiple sessions exist, ask `"Compare all runs"` or `"What worked best across sessions?"` Output goes to `runs/cross-session-report.md`.
 
 ---
 
-## Cross-session analysis
+## For the Agent
 
-When multiple runs exist, you can ask the agent to look across sessions for high-impact and high-novelty moves. Say something like:
+This section guides the Claude Code or Codex agent. A curious human can read it, but speak directly to the agent when referencing these instructions.
 
-> "Compare all runs."
-> "What worked best across my sessions?"
+### Before You Begin
 
-The agent reads the iteration logs and reports from each session, identifies moves that produced the biggest score jumps or most surprising insights, and looks for patterns that transfer across ideas. Output is written to `runs/cross-session-report.md`. See `references/cross-session.md` for the full methodology.
+1. Read every file in `references/` so you know the moves, scoring rubric, report format, TOC/TRIZ tools, and file layout.
+2. Treat `AGENTS.md` as identical to `CLAUDE.md` (they are symlinked). Any update here applies to both assistants.
+3. Research tooling:
+   - Claude Code: use `WebSearch` + `WebFetch`.
+   - Codex: use `web.run` with `search_query`/`open`/`find`.
+   - Offline fallback for either assistant: if the network call fails or access is restricted, note the missing evidence, state assumptions explicitly in the variant, and ask the human for data if the assumption feels critical.
 
-## Reference files
+### Seed Shaping
 
-| File | Purpose |
-|------|---------|
-| `references/mutate.md` | Catalog of improvement moves |
-| `references/score.md` | Scoring rubric (five dimensions) |
-| `references/select.md` | How to pick the next move |
-| `references/resolve.md` | TOC tension resolution process |
-| `references/report.md` | How to write the final report |
-| `references/format.md` | File layout and naming conventions |
-| `references/toc-thinking-processes.md` | TOC Thinking Processes toolkit (EC, CRT, FRT, PRT, TT, NBR, Magic Druids) |
-| `references/cross-session.md` | Cross-session analysis methodology |
-| `references/evaporating-cloud.md` | EC deep dive: structure, injection patterns, mass generation, examples |
-| `references/mafia-offer.md` | Mafia Offer methodology: four-phase process from UDEs to unrefusable offer |
-| `references/goldratt-technology-rules.md` | Goldratt's 4/6 questions for assessing new technology |
-| `references/sales-process-engineering.md` | Roff-Marsh/Ballistix SPE: TOC applied to sales function design |
-| `references/triz.md` | TRIZ: IFR, separation principles, inventive principles, trends of evolution |
+Goal: enter iteration with a grounded seed, not a blank slate.
 
-## Output layout
+1. Ask clarifying questions one at a time (problem, customer, mechanism, differentiation) while weaving in research.
+2. Draft tentative answers derived from your research so the user can correct rather than invent from scratch.
+3. Summarize everything (idea, clarifications, `## Research findings`) in `runs/<slug>/seed.md` and get explicit user confirmation before iterating.
 
-All session output lives under `runs/<session-slug>/`. See `references/format.md` for details. Each run directory includes a `rubric-snapshot.md` (frozen scoring rubric) and `results.tsv` (structured experiment log) in addition to the narrative files.
+### Using TOC / TP tools
 
-The cross-session report lives at `runs/cross-session-report.md` (outside any single session directory).
+- Reach for the TOC Thinking Processes reference whenever you hit a conflict or structural change. Resolve dilemmas with an Evaporating Cloud (Move 5) or Magic Druid (Move 7), then immediately validate the injection with a Future Reality Tree and trim any negative branches.
+- When a solution spans multiple tactics or teams, thread it through a Strategy & Tactic Tree before drafting Prerequisite or Transition Trees. Capture any key assumptions so later iterations can check for drift.
+
+### Cross-Run Learning
+
+Before each iteration, scan every `runs/*/results.tsv` (including the current run) to build a quick prior: which moves tended to improve Testability/Value/etc.? Favor moves that historically unlocked the current bottleneck; avoid moves that repeatedly failed.
+
+### Iteration Loop
+
+1. Run the requested number of iterations end-to-end with no mid-run confirmations.
+2. At each iteration:
+   - Re-read the seed (and last `current-best.md`) to stay anchored.
+   - Identify the lowest score / tension.
+   - Consult the cross-run prior + current `results.tsv` history to pick a move.
+   - Apply exactly one move, score the new variant, update `current-best.md` only if it wins via the bottleneck rule.
+3. Whenever you resolve a tension via EC / separation, or add a major injection, perform an immediate drift check: compare `current-best.md` to the seed and confirm the original promise still holds. Record findings in `iteration-log.md`.
+4. After all iterations, update `top-5.md` and `report.md` as specified in `references/format.md` and `references/report.md`.
+
+### Self-Evaluation Integrity Stack
+
+Apply these safeguards every iteration:
+
+1. **Red team before scoring.** Write 2–3 concrete criticisms or failure modes for the new variant. If a dimension jumps by >10 points vs. the previous variant, that criticism must address the jump (this replaces a separate regression-check step).
+2. **Anchored justifications.** Every score cites the specific evidence (section, bullet, data point) from the variant.
+3. **Devil's advocate for ≥85.** Before any dimension crosses 85, state why it *should* be lower and why it isn't.
+4. **Event-triggered drift detection.** After resolving a tension, applying a TRIZ move, or making a structural simplification, compare the new `current-best.md` to the seed to ensure you didn't erase the original value proposition. Document any drift and corrections in the iteration log.
+
+### Notes for Human Collaborators
+
+- The agent assumes control once you say "Run N iterations" and won't pause unless you intervene.
+- To inspect progress mid-run, read `runs/<slug>/iteration-log.md` or `current-best.md` directly.
+- If you clone the repo for another assistant, ensure the `AGENTS.md` symlink remains intact so the instructions stay synchronized.

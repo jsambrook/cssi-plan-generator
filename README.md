@@ -1,6 +1,6 @@
 # cssi-plan-generator
 
-An auto-improving business idea and proposal generator, powered by Claude Code.
+An auto-improving business idea and proposal generator, usable in both Claude Code and OpenAI Codex agents.
 
 ## What it does
 
@@ -20,7 +20,13 @@ The combination means the generator is not just a brainstorm tool. It is a refin
 
 ## Usage
 
-This is a Claude Code project. Open the repo in Claude Code and talk naturally — the agent reads `CLAUDE.md` and the reference files to know what to do.
+This project runs identically in Claude Code and Codex. `CLAUDE.md` contains the shared instructions, and `AGENTS.md` is a symbolic link so assistants that expect `AGENTS.md` (e.g., Codex) read the same playbook. Open the repo in your agent of choice and talk naturally — it uses those docs plus `references/` to know what to do.
+
+## Agent compatibility & setup
+
+- `CLAUDE.md` / `AGENTS.md` stay in sync via a symlink so either runtime picks up the same workflow.
+- Research calls differ slightly (`WebSearch`/`WebFetch` vs. `web.run`), but the methodology is identical. If network access is unavailable, the agent logs the missing evidence and proceeds with explicit assumptions.
+- Keep the symlink intact when copying or zipping the repo so both assistants remain supported.
 
 ### Seeding an idea
 
@@ -69,6 +75,28 @@ Output is written to `runs/cross-session-report.md`. See `references/cross-sessi
 ## Live example
 
 The `runs/self-improvement/` directory contains a complete run where the tool was used to improve its own design — a recursive case. Read the [iteration log](runs/self-improvement/iteration-log.md) and [report](runs/self-improvement/report.md) to see the full progression, including two resolved Evaporating Clouds.
+
+## Quick verification checklist
+
+1. `rg -n "Run Report" runs/self-improvement` – confirm the sample run artifacts exist.
+2. Inspect `runs/self-improvement/results.tsv` to make sure iteration rows match the log before starting a new run.
+3. Run your agent against the sample run (e.g., "Summarize the self-improvement run") to verify it can read the file layout end-to-end.
+4. Before submitting changes, open both `CLAUDE.md` and `AGENTS.md` to ensure the symlink still points to the shared instructions.
+
+## TOC / TP integrity checklist
+
+Use this whenever a change touches the methodology (moves, CLAUDE.md, references):
+
+1. **Update references.** Ensure `references/toc-thinking-processes.md` reflects any new or modified tool guidance (EC, FRT, NBR, Strategy & Tactic Trees, etc.).
+2. **Sync the move catalog.** If a tool affects how a move operates, update `references/mutate.md` so the workflow mentions it explicitly.
+3. **Align agent instructions.** Confirm `CLAUDE.md`/`AGENTS.md` reference the new behavior so both Claude Code and Codex read the same guidance.
+4. **Reviewer pass.** Have the designated TP plan reviewer (human or agent) run `scripts/verify.sh` (which chains `check_tp_integrity` + TODO scan) and walk through this checklist before merging. Agents are acceptable reviewers as long as they report any missing cross-references back to a human maintainer.
+
+### Local quality tools
+
+- **Pre-commit hook (optional):** enable with `git config core.hooksPath .githooks`. It runs the integrity check and blocks TODO markers.
+- **One-command verify:** run `scripts/verify.sh` before pushing or merging.
+- **Git alias:** add `tpcheck = !scripts/check_tp_integrity.sh` to your local `~/.gitconfig` (or `git config alias.tpcheck '!scripts/check_tp_integrity.sh'`) for quick ad-hoc checks.
 
 ## Scoring
 
