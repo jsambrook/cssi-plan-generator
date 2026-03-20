@@ -14,9 +14,18 @@ This framing keeps the selection grounded in the actual idea rather than mechani
 
 ---
 
+## Cross-run prior
+
+Before looking at the current run, scan every `runs/*/results.tsv` (including the current one) and note:
+1. Which moves most frequently increased the bottleneck dimension you are facing now?
+2. Which moves tended to hurt that dimension or stall progress?
+3. Are there move types the project rarely tries that might unlock the current bottleneck?
+
+Capture only lightweight notes (you just need a mental prior), then proceed to the run-specific history check.
+
 ## History check
 
-Before selecting a move, the agent scans `results.tsv` and answers:
+Before selecting a move, scan **this run's** `results.tsv` and answer:
 1. Which moves have I applied so far? Which produced a new current-best?
 2. Which moves made things worse (lower scores than the previous variant)?
 3. Is there a move type I haven't tried yet?

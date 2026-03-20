@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v bash >/dev/null; then
+  echo "pre-commit: bash is required" >&2
+  exit 1
+fi
+
+printf '[pre-commit] running TOC/TP integrity check...\n'
+scripts/check_tp_integrity.sh
+
+printf '[pre-commit] scanning for TODO markers...\n'
+pattern='^\s*TODO\b'
+if RIPGREP_CONFIG_PATH= rg --line-number --hidden --glob '!.git/' "$pattern" ; then
+  echo "pre-commit: TODO markers found. Remove or justify before committing." >&2
+  exit 1
+else
+  status=$?
+  if [[ $status -ne 1 ]]; then
+    echo "pre-commit: rg failed unexpectedly." >&2
+    exit $status
+  fi
+fi
+
+printf '[pre-commit] OK\n'

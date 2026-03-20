@@ -122,17 +122,13 @@ This is distinct from difficulty (Dimension 3). Difficulty measures effort; spee
 
 ---
 
-## Scoring discipline
+## Scoring discipline & integrity stack
 
-### Devil's advocate for 85+
-
-Before assigning any score of 85 or above, the agent must state one specific reason the score should be lower and explain why it isn't. This prevents score inflation and forces intellectual honesty.
-
-Example: "Testability: 87. Devil's advocate: the test requires a willing participant from BNI, which is a dependency. Counter: John has three BNI contacts with active dilemmas and existing relationships, so the dependency is soft, not hard."
-
-### Score decay check
-
-If a dimension hasn't been the target of a move for 5+ iterations, the agent must re-examine its justification. The idea may have changed in ways that invalidate the old score.
+1. **Red-team before scoring.** After producing a variant and before assigning any scores, list 2–3 concrete criticisms. If any dimension jumps by more than 10 points versus the previous variant, at least one criticism must interrogate that jump (this replaces the old regression-check step).
+2. **Anchored justifications.** Every score cites the exact element (section, bullet, data point) in the variant that supports it. If the evidence is missing, lower the score.
+3. **Devil's advocate for ≥85.** Before assigning a score of 85 or above, state one specific reason the score should be lower and why that concern is mitigated.
+4. **Event-triggered drift detection.** Whenever you resolve a tension, apply TRIZ/IFR, or otherwise make a structural change, compare `current-best.md` to the seed. Document any drift and the correction in the iteration log before moving on.
+5. **Score decay check.** If a dimension hasn't been directly targeted for five iterations, revisit its justification to confirm it still holds.
 
 ### Plateau detection (advisory)
 

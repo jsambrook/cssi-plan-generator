@@ -96,13 +96,13 @@ Each side has four cause-and-effect steps, read from bottom to top. The loop is 
 **Structure:** Same as a CRT, but built forward from the proposed injection rather than backward from symptoms. Start with the injection at the bottom, build cause-and-effect upward, and check whether the desired effects appear at the top.
 
 **How to build one:**
-1. Place the injection (from the EC or other analysis) at the base.
-2. Build upward: "If we do this, then what happens? And then what?"
-3. Check for Negative Branch Reservations (see below) — unintended negative consequences.
-4. If negative branches appear, add supplementary injections to trim them.
-5. Verify that the original UDEs from the CRT are replaced by desirable effects.
+1. Place the injection (from the EC, Magic Druid, or TRIZ move) at the base.
+2. Build sufficiency-based links upward: "If [cause], then [effect] because..." Capture the rationale inline.
+3. Keep linking until the desired effects (reversals of the UDEs) appear at the top of the tree.
+4. At each link, ask "What could make this false?" to surface presumptions.
+5. Run Negative Branch Reservations (next section) on any link that feels risky. Add extra injections or conditions to trim those branches.
 
-**When to use in this tool:** After resolving a tension (Move 5 or Move 7), use the FRT to validate that the injection actually improves the idea without creating new problems. Especially important when the injection changes the business model, target customer, or core mechanism.
+**When to use in this tool:** After resolving a tension (Move 5 or Move 7) or inventing a bold new mechanism (Move 10/11), use the FRT to validate that the injection actually improves the idea without creating new problems. Especially important when the injection changes the business model, target customer, or core mechanism.
 
 **Agent guidance:** The FRT is a reality check, not a sales document. Actively look for ways the injection could fail or backfire. If you can't find any negative branches, you're probably not looking hard enough.
 
@@ -112,16 +112,16 @@ Each side has four cause-and-effect steps, read from bottom to top. The loop is 
 
 **Purpose:** Identify and preemptively address negative side effects of a proposed change.
 
-**Structure:** A branch off a Future Reality Tree showing: injection → intermediate effects → undesirable outcome.
+**Structure:** A branch off a Future Reality Tree showing: injection → intermediate effects → undesirable outcome. Each branch is its own micro tree.
 
 **How to use:**
-1. While building an FRT, ask at each step: "What could go wrong here? What negative side effect might this cause?"
-2. If you find one, trace the cause-and-effect chain to the negative outcome.
-3. Design a supplementary injection (a trim) that prevents the negative branch from materializing.
+1. While building an FRT or PRT, ask at each step: "What could go wrong here? What negative side effect might this cause?"
+2. If you find one, trace the cause-and-effect chain to the negative outcome (that is the negative branch).
+3. Design a supplementary injection (a trim) that prevents or mitigates the branch. Document the trim in the same variant so future work honors it.
 
 **When to use in this tool:** Whenever Move 5 or Move 7 produces an injection that changes the idea significantly. The NBR catches problems before they're baked into the next variant.
 
-**Agent guidance:** Present NBRs constructively. The goal is not to kill the injection but to strengthen it. Every NBR should end with a trim — if you can name the problem, you can usually design the fix.
+**Agent guidance:** Present NBRs constructively. The goal is not to kill the injection but to strengthen it. Every NBR should end with a trim — if you can name the problem, you can usually design the fix. When a branch feels scary but you cannot design a mitigation, call it out explicitly so the human can help.
 
 ---
 
@@ -162,6 +162,25 @@ Each step states:
 
 ---
 
+### 8. Strategy & Tactic Tree (S&T)
+
+**Purpose:** Align high-level objectives (strategy) with the concrete tactics that deliver them, including the necessary assumptions. Bridges "what to change to" and "how to cause the change" by making every tactic traceable to the strategy and constraints.
+
+**Structure:** Repeating blocks of Strategy → Assumptions → Tactic → Assumptions → Next-level Tactic. Each strategy node states the objective at that level; its tactic describes *how* it will be accomplished; assumptions explain why the tactic works and what conditions must hold.
+
+**How to build one:**
+1. Start from the top objective (often the injection validated by the FRT).
+2. For that objective, articulate the strategy statement (what success looks like) and the tactic (the concrete approach).
+3. List the assumptions behind both statements — market realities, resource availability, success measures. Assumptions later become checkpoints for drift detection.
+4. For each tactic that requires sub-steps, add child strategy/tactic blocks until the work is actionable or handed off to a PRT/TT.
+5. When assumptions look shaky, either strengthen them (via research) or design safeguards.
+
+**When to use in this tool:** When the idea spans multiple teams/steps and you need to ensure each tactic aligns with the constraint-aware strategy. Useful after an FRT confirms the solution but before detailed execution planning; it keeps later trees (PRT/TT) coherent.
+
+**Agent guidance:** Keep the tree light. It is a coordination artifact, not a Gantt chart. Focus on clarity: if someone reads a tactic, they should immediately understand what they must do and why it matters to the higher-level strategy.
+
+---
+
 ## How the TP Tools Connect
 
 The tools form a natural sequence:
@@ -175,10 +194,12 @@ wrong?     core conflict?      work?        in the    action plan
 ```
 
 In practice, the agent most commonly uses:
+- **CRT** when the idea has multiple UDEs and the root cause isn't obvious
 - **EC** (Move 5) for one-time conflicts in business ideas
 - **Magic Druids** (Move 7) for recurring oscillations
-- **NBR** implicitly when evaluating whether an injection creates new problems
-- **CRT** when the idea has multiple UDEs and the root cause isn't obvious
+- **FRT + NBR** to validate and stress-test any injection before it becomes the new current-best
+- **Strategy & Tactic Trees** to keep multi-level plans aligned
 - **PRT** when building execution plans for ideas that face real obstacles
+- **TT** only when the execution sequence must be watertight
 
-The FRT and TT are available but used less frequently — they add rigor at the cost of iteration speed, which is usually not the right trade-off during rapid improvement loops.
+Use the lightest tool that gives you confidence. Escalate to the heavier tools when stakes rise or the same issue reappears.
